@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/context/AuthContext'
 import { Sidebar, TopBar } from '@/components/dashboard'
+import { useAuth } from '@/context/AuthContext'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export default function DashboardLayout({
   children,
@@ -14,23 +14,23 @@ export default function DashboardLayout({
   const router = useRouter()
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
 
-  useEffect(() => {
-    if (!isLoading) {
-      if (!isAuthenticated) {
-        router.push('/login')
-      } else if (user && !user.isRegistered && user.role !== 'admin') {
-        // Jika user adalah siswa dan belum melengkapi data diri
-        router.push('/register')
-      }
-    }
-  }, [isAuthenticated, isLoading, user, router])
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     if (!isAuthenticated) {
+  //       router.push('/login')
+  //     } else if (user && !user.isRegistered && user.role !== 'admin') {
+  //       // Jika user adalah siswa dan belum melengkapi data diri
+  //       router.push('/register')
+  //     }
+  //   }
+  // }, [isAuthenticated, isLoading, user, router])
 
-  if (isLoading || !isAuthenticated || (user && !user.isRegistered && user.role !== 'admin')) {
-    return <div className="min-h-screen bg-[var(--color-bg)] flex items-center justify-center">Loading...</div>
-  }
+  // if (isLoading || !isAuthenticated || (user && !user.isRegistered && user.role !== 'admin')) {
+  //   return <div className="min-h-screen bg-[var(--color-bg)] flex items-center justify-center">Loading...</div>
+  // }
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text-primary)]">
+    <div className="min-h-screen">
       <Sidebar 
         isCollapsed={isSidebarCollapsed} 
         onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 

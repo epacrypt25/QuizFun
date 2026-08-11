@@ -1,8 +1,8 @@
 "use client";
 
+import { ChevronDown, ExternalLink, LogOut, Wallet } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { useState, useRef, useEffect } from "react";
-import { Wallet, ChevronDown, LogOut, ExternalLink } from "lucide-react";
 
 export function ConnectButton() {
   const { address, isConnected } = useAccount();
@@ -73,11 +73,12 @@ export function ConnectButton() {
     <div className="relative font-sans" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group relative flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold font-medium text-white transition-all hover:bg-blue-700"
+        className="group relative flex items-center gap-2.5 rounded-full bg-red-400 px-5 py-2 text-xs font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-500/30 active:translate-y-0"
       >
-        <Wallet className="h-3.5 w-3.5 text-white/90" />
-        <span>Connect Wallet</span>
+        <Wallet className="h-4 w-4 text-gray-500 transition-transform group-hover:rotate-12 duration-300" />
+        <span className="tracking-wide">Connect Wallet</span>
       </button>
+
 
       {/* Dropdown Pilihan Wallet */}
       {isOpen && (

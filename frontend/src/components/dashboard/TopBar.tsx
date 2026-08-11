@@ -1,52 +1,47 @@
 'use client'
 
+import { Bell, Moon, Sun } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { ConnectButton } from '@/components/ui/ConnectButton'
-
-/* ==========================================
-   TopBar — Dashboard Header
-   Search bar, notifications, theme toggle, user avatar
-   ========================================== */
 
 export function TopBar() {
-  const [searchQuery, setSearchQuery] = useState('')
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  const pathname = usePathname()
+
+  // Fungsi untuk mengubah struktur URL /quiz menjadi teks rapi "Quizzes"
+  const getPageTitle = () => {
+    if (pathname === '/dashboard') return 'Dashboard'
+    if (pathname === '/quiz') return 'Quizzes'
+    if (pathname === '/leaderboard') return 'Leaderboard'
+    if (pathname === '/settings') return 'Settings'
+    return 'Dashboard' // Nama default jika tidak ada yang cocok
+  }
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-[var(--color-border-light)] bg-white/80 backdrop-blur-md px-6">
-      {/* Search */}
-      <div className="flex items-center gap-3 flex-1 max-w-md">
-        <div className="relative flex-1">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm">
-            🔍
-          </span>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search..."
-            className="input pl-9 py-2.5 text-sm bg-[var(--color-bg)] border-transparent focus:border-[var(--color-primary)] focus:bg-white"
-          />
-        </div>
+    <header className="sticky top-0 z-20 flex h-16 items-center justify-between px-6 backdrop-blur-md ">
+
+      {/* SISI KIRI: Nama Halaman Aktif (Dinamis & Informatif) */}
+      <div className="flex items-center">
+        <h1 className="text-lg font-extrabold tracking-tight text-gray-900 md:text-xl capitalize">
+          {getPageTitle()}
+        </h1>
       </div>
 
-      {/* Right Actions */}
-      <div className="flex items-center gap-3">
-        {/* Notification Bell */}
-        <button className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg)] text-[var(--color-text-secondary)] hover:bg-[var(--color-primary-50)] hover:text-[var(--color-primary)] transition-colors">
-          <span className="text-lg">🔔</span>
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
-            3
-          </span>
+      {/* SISI KANAN: Tombol Aksi */}
+      <div className="flex items-center gap-3.5">
+        <button
+          onClick={() => setIsDarkMode(!isDarkMode)}
+          className="rounded-xl p-2.5 text-gray-500 border border-gray-100 bg-white hover:bg-gray-50 transition-all hover:text-gray-950 shadow-sm"
+        >
+          {isDarkMode ? <Sun className="h-4 w-4 text-amber-500" /> : <Moon className="h-4 w-4" />}
         </button>
 
-        {/* Theme Toggle */}
-        <button className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg)] text-[var(--color-text-secondary)] hover:bg-[var(--color-primary-50)] hover:text-[var(--color-primary)] transition-colors">
-          <span className="text-lg">☀️</span>
+        <button className="relative rounded-xl p-2.5 text-gray-500 border border-gray-100 bg-white hover:bg-gray-50 transition-all hover:text-gray-950 shadow-sm">
+          <Bell className="h-4 w-4" />
+          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
         </button>
-
-        {/* Wallet Connect */}
-        <ConnectButton />
       </div>
+
     </header>
   )
 }
