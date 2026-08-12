@@ -23,7 +23,7 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
   const pathname = usePathname()
 
   const menuItems = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Dashboard', href: '/home', icon: LayoutDashboard },
     { name: 'Quizzes', href: '/quiz', icon: BookOpen },
     { name: 'Leaderboard', href: '/leaderboard', icon: Trophy },
     { name: 'Settings', href: '/settings', icon: Settings },

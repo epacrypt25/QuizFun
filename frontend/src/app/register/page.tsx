@@ -1,106 +1,83 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/context/AuthContext'
-
-const AVATARS = ['🦊', '🐶', '🐱', '🐼', '🦁', '🐸', '🦄', '🐲']
-
-export default function RegisterPage() {
-  const { user, isAuthenticated, isLoading, registerUser } = useAuth()
-  const router = useRouter()
-  
-  const [name, setName] = useState('')
-  const [selectedAvatar, setSelectedAvatar] = useState(AVATARS[0])
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  useEffect(() => {
-    // Jika belum login, ke halaman login
-    if (!isLoading && !isAuthenticated) {
-      router.push('/login')
-    }
-    // Jika sudah teregistrasi, langsung ke dashboard
-    if (!isLoading && user?.isRegistered) {
-      router.push(user.role === 'admin' ? '/admin' : '/dashboard')
-    }
-  }, [isAuthenticated, isLoading, user, router])
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    
-    // Simulasikan delay jaringan
-    setTimeout(() => {
-      registerUser(name, selectedAvatar)
-      router.push('/dashboard')
-    }, 1000)
-  }
-
-  if (isLoading || !isAuthenticated || user?.isRegistered) {
-    return <div className="min-h-screen bg-[var(--color-bg)] flex items-center justify-center">Memuat...</div>
-  }
+export default function RegisterSiswa() {
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] flex flex-col items-center justify-center p-6">
-      <div className="card max-w-md w-full p-8 animate-scale-in">
+    <div className="min-h-screen bg-cyan-950 flex items-center justify-center p-4 sm:p-6 md:p-8">
+      {/* Kontainer Utama Form */}
+      <div className="w-full max-w-md bg-cyan-900/40 border border-cyan-500/20 rounded-2xl p-6 md:p-8 backdrop-blur-md shadow-2xl shadow-cyan-950/50">
+
+        {/* Header Form */}
         <div className="text-center mb-8">
-          <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-primary-50)] text-3xl mb-4">
-            🎒
-          </div>
-          <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
-            Lengkapi Profil Anda
+          <h1 className="text-2xl md:text-3xl font-black tracking-tight text-white mb-2">
+            Daftar Akun <span className="text-cyan-400">Siswa</span>
           </h1>
-          <p className="text-sm text-[var(--color-text-muted)] mt-2">
-            Pilih avatar dan masukkan nama panggilan Anda untuk memulai petualangan!
+          <p className="text-xs md:text-sm text-cyan-200/60">
+            Isi data diri Anda untuk memulai petualangan belajar kuis.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          {/* Avatar Selection */}
-          <div>
-            <label className="block text-sm font-semibold text-[var(--color-text-primary)] mb-3 text-center">
-              Pilih Karakter Favoritmu
-            </label>
-            <div className="grid grid-cols-4 gap-3">
-              {AVATARS.map((avatar) => (
-                <button
-                  key={avatar}
-                  type="button"
-                  onClick={() => setSelectedAvatar(avatar)}
-                  className={`h-14 w-14 rounded-2xl text-2xl flex items-center justify-center transition-all ${
-                    selectedAvatar === avatar
-                      ? 'bg-[var(--color-primary)] text-white scale-110 shadow-lg shadow-blue-500/30'
-                      : 'bg-[var(--color-bg)] border border-[var(--color-border-light)] hover:bg-[var(--color-primary-50)] hover:scale-105'
-                  }`}
-                >
-                  {avatar}
-                </button>
-              ))}
-            </div>
-          </div>
+        {/* Form Input */}
+        <form className="flex flex-col gap-5" onSubmit={(e) => e.preventDefault()}>
 
-          {/* Name Input */}
-          <div>
-            <label className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2">
-              Nama Panggilan
+          {/* Input Nama Lengkap */}
+          <div className="flex flex-col items-start gap-1.5 w-full">
+            <label className="text-xs font-bold text-cyan-300 uppercase tracking-wider">
+              Nama Lengkap
             </label>
             <input
               type="text"
               required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="input text-center text-lg font-bold"
-              placeholder="Cth: Budi"
-              maxLength={15}
+              placeholder="Masukkan nama lengkap..."
+              className="w-full rounded-xl border border-cyan-800 bg-cyan-950/50 px-4 py-3 text-sm text-white outline-none transition-all placeholder:text-cyan-700 focus:border-cyan-500 focus:bg-cyan-950 focus:ring-4 focus:ring-cyan-500/10"
             />
           </div>
 
+          {/* Input NISN / Nomor Induk */}
+          <div className="flex flex-col items-start gap-1.5 w-full">
+            <label className="text-xs font-bold text-cyan-300 uppercase tracking-wider">
+              NISN (Nomor Induk Siswa)
+            </label>
+            <input
+              type="number"
+              required
+              placeholder="Contoh: 0041234567"
+              className="w-full rounded-xl border border-cyan-800 bg-cyan-950/50 px-4 py-3 text-sm text-white outline-none transition-all placeholder:text-cyan-700 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:border-cyan-500 focus:bg-cyan-950 focus:ring-4 focus:ring-cyan-500/10"
+            />
+          </div>
+
+          {/* Input Email */}
+          <div className="flex flex-col items-start gap-1.5 w-full">
+            <label className="text-xs font-bold text-cyan-300 uppercase tracking-wider">
+              Email Siswa
+            </label>
+            <input
+              type="email"
+              required
+              placeholder="nama@sekolah.sch.id"
+              className="w-full rounded-xl border border-cyan-800 bg-cyan-950/50 px-4 py-3 text-sm text-white outline-none transition-all placeholder:text-cyan-700 focus:border-cyan-500 focus:bg-cyan-950 focus:ring-4 focus:ring-cyan-500/10"
+            />
+          </div>
+
+          {/* Input Password */}
+          <div className="flex flex-col items-start gap-1.5 w-full">
+            <label className="text-xs font-bold text-cyan-300 uppercase tracking-wider">
+              Kata Sandi
+            </label>
+            <input
+              type="password"
+              required
+              placeholder="Minimal 8 karakter..."
+              className="w-full rounded-xl border border-cyan-800 bg-cyan-950/50 px-4 py-3 text-sm text-white outline-none transition-all placeholder:text-cyan-700 focus:border-cyan-500 focus:bg-cyan-950 focus:ring-4 focus:ring-cyan-500/10"
+            />
+          </div>
+
+          {/* Tombol Submit Register */}
           <button
             type="submit"
-            disabled={isSubmitting || !name.trim()}
-            className="btn-primary w-full py-3 text-lg mt-4 disabled:opacity-50"
+            className="w-full mt-2 rounded-xl bg-cyan-500 hover:bg-cyan-600 px-6 py-3.5 text-sm font-bold text-cyan-950 transition-all shadow-lg shadow-cyan-500/10 hover:-translate-y-0.5 active:translate-y-0 text-center"
           >
-            {isSubmitting ? 'Menyimpan...' : 'Mulai Bermain! 🚀'}
+            Daftar Sekarang
           </button>
         </form>
       </div>
