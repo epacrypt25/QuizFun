@@ -1,11 +1,12 @@
 @import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
 
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #e5e7eb; /* Warna abu-abu terang yang modern (sama dengan bg-gray-100) */
+  @apply bg-gray-100 dark:bg-gray-950 text-gray-950 dark:text-gray-50 transition-colors duration-300;
 }
 
 
