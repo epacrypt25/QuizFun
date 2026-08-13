@@ -4,6 +4,7 @@
    Leaderboard — Matches screenshot design
    Ranked list with avatar, name, XP
    ========================================== */
+import { motion } from 'framer-motion'
 
 interface LeaderboardEntry {
   rank: number
@@ -21,16 +22,41 @@ const leaderboardData: LeaderboardEntry[] = [
   { rank: 5, name: 'Sarah Chen', xp: 3100, avatar: '🌟' },
 ]
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  show: { opacity: 1, x: 0 }
+}
+
 export function Leaderboard() {
   return (
-    <div className="card p-6">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="card p-6">
       <h3 className="mb-5 text-lg font-bold text-[var(--color-text-primary)]">
         Leaderboard
       </h3>
 
-      <div className="flex flex-col gap-3">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="flex flex-col gap-3">
         {leaderboardData.map((entry) => (
-          <div
+          <motion.div
+            variants={itemVariants}
+            whileHover={{ scale: 1.02, x: 5 }}
             key={entry.rank}
             className={`flex items-center gap-4 rounded-xl px-4 py-3 transition-colors ${
               entry.isCurrentUser
@@ -68,9 +94,9 @@ export function Leaderboard() {
             <span className="text-sm font-bold text-[var(--color-primary)]">
               {entry.xp.toLocaleString()} XP
             </span>
-          </div>
+          </motion.div>
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }

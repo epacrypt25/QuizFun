@@ -4,6 +4,7 @@
    CourseModule — Module cards for courses
    Matches screenshot: icon, title, progress
    ========================================== */
+import { motion } from 'framer-motion'
 
 interface CourseModuleProps {
   title: string
@@ -14,12 +15,21 @@ interface CourseModuleProps {
 
 export function CourseModule({ title, icon, progress, isLocked = false }: CourseModuleProps) {
   return (
-    <div className={`card-flat p-4 flex flex-col items-center justify-center gap-3 text-center transition-all ${
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={!isLocked ? { scale: 1.05, y: -5 } : {}}
+      transition={{ duration: 0.3 }}
+      className={`card-flat p-4 flex flex-col items-center justify-center gap-3 text-center transition-colors ${
       isLocked ? 'opacity-50 grayscale cursor-not-allowed' : 'hover:border-[var(--color-primary)] hover:shadow-md cursor-pointer'
     }`}>
-      <div className="w-16 h-16 rounded-2xl bg-[var(--color-bg)] flex items-center justify-center text-3xl mb-2">
+      <motion.div 
+        whileHover={!isLocked ? { rotate: [0, -10, 10, -10, 0] } : {}}
+        transition={{ duration: 0.5 }}
+        className="w-16 h-16 rounded-2xl bg-[var(--color-bg)] flex items-center justify-center text-3xl mb-2"
+      >
         {icon}
-      </div>
+      </motion.div>
       <h4 className="text-sm font-bold text-[var(--color-text-primary)]">
         {title}
       </h4>
@@ -34,13 +44,15 @@ export function CourseModule({ title, icon, progress, isLocked = false }: Course
             <span>{progress}%</span>
           </div>
           <div className="w-full h-1.5 bg-[var(--color-bg)] rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-[var(--color-primary)] rounded-full transition-all" 
-              style={{ width: `${progress}%` }}
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="h-full bg-[var(--color-primary)] rounded-full" 
             />
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }

@@ -31,8 +31,9 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-40 flex flex-col justify-between border-r border-gray-200 bg-white p-4 transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'
-        }`}
+      className={`fixed inset-y-0 left-0 z-40 flex flex-col justify-between border-r border-gray-200 bg-white p-4 transition-transform duration-300 w-64 md:transition-all ${
+        isCollapsed ? '-translate-x-full md:translate-x-0 md:w-20' : 'translate-x-0'
+      }`}
     >
       {/* Bagian Atas: Logo & Tombol Toggle */}
       <div>

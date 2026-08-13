@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #e5e7eb; /* Warna abu-abu terang yang modern (sama dengan bg-gray-100) */
 }

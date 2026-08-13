@@ -1,15 +1,16 @@
 'use client'
 
-import { Bell, Moon, Sun } from 'lucide-react'
+import { Bell, Moon, Sun, Menu } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
-export function TopBar() {
+export function TopBar({ onMenuClick }: { onMenuClick?: () => void }) {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const pathname = usePathname()
 
   // Fungsi untuk mengubah struktur URL /quiz menjadi teks rapi "Quizzes"
   const getPageTitle = () => {
+    if (pathname === '/home') return 'Dashboard'
     if (pathname === '/dashboard') return 'Dashboard'
     if (pathname === '/quiz') return 'Quizzes'
     if (pathname === '/leaderboard') return 'Leaderboard'
@@ -18,10 +19,16 @@ export function TopBar() {
   }
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between px-6 backdrop-blur-md ">
+    <header className="sticky top-0 z-20 flex h-16 items-center justify-between px-4 md:px-6 backdrop-blur-md bg-white/50 border-b border-gray-200/50">
 
       {/* SISI KIRI: Nama Halaman Aktif (Dinamis & Informatif) */}
-      <div className="flex items-center">
+      <div className="flex items-center gap-3">
+        <button 
+          onClick={onMenuClick} 
+          className="md:hidden rounded-xl p-2 text-gray-500 bg-white border border-gray-100 hover:bg-gray-50 shadow-sm"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
         <h1 className="text-lg font-extrabold tracking-tight text-gray-900 md:text-xl capitalize">
           {getPageTitle()}
         </h1>

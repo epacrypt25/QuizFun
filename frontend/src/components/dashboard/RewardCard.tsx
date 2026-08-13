@@ -4,6 +4,7 @@
    RewardCard — Daily Reward & Social Task
    Matches screenshot: icon, title, reward, CTA
    ========================================== */
+import { motion } from 'framer-motion'
 
 interface RewardCardProps {
   type: 'daily' | 'social'
@@ -28,7 +29,12 @@ export function RewardCard({
   onAction,
 }: RewardCardProps) {
   return (
-    <div className="card p-5 flex flex-col justify-between h-full">
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" }}
+      transition={{ duration: 0.3 }}
+      className="card p-5 flex flex-col justify-between h-full">
       {/* Top */}
       <div className="flex items-start justify-between mb-3">
         <div>
@@ -39,9 +45,11 @@ export function RewardCard({
             {title}
           </h4>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg)] text-xl flex-shrink-0">
+        <motion.div 
+          whileHover={{ rotate: 15, scale: 1.1 }}
+          className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg)] text-xl flex-shrink-0">
           {icon}
-        </div>
+        </motion.div>
       </div>
 
       {/* Reward */}
@@ -51,12 +59,14 @@ export function RewardCard({
       </div>
 
       {/* CTA */}
-      <button
+      <motion.button
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
         onClick={onAction}
-        className={`w-full rounded-lg ${ctaColor} py-2.5 text-sm font-semibold text-white transition-all hover:opacity-90 hover:shadow-md active:scale-[0.98]`}
+        className={`w-full rounded-lg ${ctaColor} py-2.5 text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98]`}
       >
         {ctaText}
-      </button>
-    </div>
+      </motion.button>
+    </motion.div>
   )
 }

@@ -1,201 +1,227 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import { Trophy, Target, Coins, TrendingUp } from 'lucide-react'
+
 export default function StudentDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-fade-in-up">
-      {/* Kontainer Grid Responsif */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full text-black">
+      {/* Kontainer Grid Responsif untuk Metrik */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full text-white">
 
-        {/* Kartu 1: Total Kuis Diikuti (Warna Merah Lembut) */}
-        <div className="flex flex-col justify-between p-6 bg-red-100 border border-red-200 rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-400 group">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-bold text-red-700 uppercase tracking-wider">
-              Kuis Diikuti
+        {/* Kartu 1: Total Kuis Diikuti */}
+        <motion.div 
+          whileHover={{ y: -5, scale: 1.02 }}
+          className="relative overflow-hidden flex flex-col justify-between p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl shadow-xl shadow-purple-500/20 group border border-purple-400/30"
+        >
+          <div className="absolute top-0 right-0 p-4 opacity-20 transform group-hover:scale-110 transition-transform duration-500">
+            <Target className="w-24 h-24" />
+          </div>
+          <div className="relative z-10 flex items-center justify-between mb-4">
+            <span className="text-xs font-bold text-indigo-100 uppercase tracking-widest drop-shadow-sm">
+              Quizzes Taken
             </span>
-            <div className="p-2 rounded-xl bg-red-200 text-red-800 transition-colors group-hover:bg-red-600 group-hover:text-white">
-              <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-3-12h.008v.008H13.5V6zm0 3h.008v.008H13.5V9zm0 3h.008v.008H13.5v-.008zm0 3h.008v.008H13.5v-.008zM5.625 21h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9 9 9 0 00-9 9v8.625c0 .621.504 1.125 1.125 1.125z" />
-              </svg>
+            <div className="p-2.5 rounded-2xl bg-white/20 backdrop-blur-md text-white shadow-inner">
+              <Target className="w-5 h-5" />
             </div>
           </div>
-          <div>
-            <h3 className="text-3xl font-black text-black leading-none">
+          <div className="relative z-10">
+            <h3 className="text-4xl font-black text-white leading-none tracking-tight">
               24
             </h3>
-            <p className="text-xs text-red-800/80 mt-2 font-medium">
-              +3 kuis baru minggu ini
+            <p className="text-xs text-indigo-100 mt-3 font-semibold flex items-center gap-1.5">
+              <span className="bg-white/20 px-2 py-0.5 rounded-full">+3 this week</span>
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Kartu 2: Rata-rata Skor (Warna Biru Lembut) */}
-        <div className="flex flex-col justify-between p-6 bg-blue-100 border border-blue-200 rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-400 group">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
-              Rata-Rata Skor
+        {/* Kartu 2: Rata-rata Skor */}
+        <motion.div 
+          whileHover={{ y: -5, scale: 1.02 }}
+          className="relative overflow-hidden flex flex-col justify-between p-6 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-3xl shadow-xl shadow-cyan-500/20 group border border-cyan-400/30"
+        >
+          <div className="absolute -bottom-4 -right-4 p-4 opacity-20 transform group-hover:rotate-12 transition-transform duration-500">
+            <TrendingUp className="w-28 h-28" />
+          </div>
+          <div className="relative z-10 flex items-center justify-between mb-4">
+            <span className="text-xs font-bold text-blue-100 uppercase tracking-widest drop-shadow-sm">
+              Average Score
             </span>
-            <div className="p-2 rounded-xl bg-blue-200 text-blue-800 transition-colors group-hover:bg-blue-600 group-hover:text-white">
-              <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18m9-9H3" />
-              </svg>
+            <div className="p-2.5 rounded-2xl bg-white/20 backdrop-blur-md text-white shadow-inner">
+              <TrendingUp className="w-5 h-5" />
             </div>
           </div>
-          <div>
-            <h3 className="text-3xl font-black text-black leading-none">
+          <div className="relative z-10">
+            <h3 className="text-4xl font-black text-white leading-none tracking-tight">
               85.4%
             </h3>
-            <p className="text-xs text-green-700 font-bold mt-2 flex items-center gap-1">
-              <span>▲ 2.1%</span> <span className="text-blue-800/80 font-normal">dari bulan lalu</span>
+            <p className="text-xs text-blue-50 mt-3 font-semibold flex items-center gap-1.5">
+              <span className="bg-white/20 px-2 py-0.5 rounded-full text-emerald-300">▲ 2.1%</span> 
+              <span>from last month</span>
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Kartu 3: Total Reward Token (Warna Kuning Lembut) */}
-        <div className="flex flex-col justify-between p-6 bg-amber-100 border border-amber-200 rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-400 group">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-bold text-amber-800 uppercase tracking-wider">
-              Token Didapatkan
+        {/* Kartu 3: Total Reward Token */}
+        <motion.div 
+          whileHover={{ y: -5, scale: 1.02 }}
+          className="relative overflow-hidden flex flex-col justify-between p-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-3xl shadow-xl shadow-orange-500/20 group border border-orange-300/40"
+        >
+          <div className="absolute top-4 -right-4 p-4 opacity-20 transform group-hover:-translate-x-2 transition-transform duration-500">
+            <Coins className="w-28 h-28" />
+          </div>
+          <div className="relative z-10 flex items-center justify-between mb-4">
+            <span className="text-xs font-bold text-orange-100 uppercase tracking-widest drop-shadow-sm">
+              Tokens Earned
             </span>
-            <div className="p-2 rounded-xl bg-amber-200 text-amber-900 transition-colors group-hover:bg-amber-500 group-hover:text-white">
-              <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
-              </svg>
+            <div className="p-2.5 rounded-2xl bg-white/20 backdrop-blur-md text-white shadow-inner">
+              <Coins className="w-5 h-5" />
             </div>
           </div>
-          <div>
-            {/* Diubah menjadi warna hitam pekat solid tanpa efek teks gradasi */}
-            <h3 className="text-3xl font-black text-black leading-none">
+          <div className="relative z-10">
+            <h3 className="text-4xl font-black text-white leading-none tracking-tight drop-shadow-sm">
               350 QW3
             </h3>
-            <p className="text-xs text-amber-800/80 mt-2 font-medium">
-              Siap diklaim ke wallet
+            <p className="text-xs text-orange-50 mt-3 font-semibold flex items-center gap-1.5">
+              <span className="bg-white/20 px-2 py-0.5 rounded-full">Ready to claim!</span>
             </p>
           </div>
-        </div>
+        </motion.div>
 
       </div>
 
 
-      <div className="w-full pt-4 text-black">
-        {/* Judul & Deskripsi Papan Peringkat */}
-        <div className="flex flex-col items-start mb-6 text-left">
-          <h2 className="text-xl font-extrabold tracking-tight text-black sm:text-2xl">
-            Top Global Leaderboard
-          </h2>
-          <p className="text-xs text-gray-700 mt-1">
-            Peringkat siswa terbaik berdasarkan akumulasi skor kuis tertinggi bulan ini.
-          </p>
+      {/* Papan Peringkat (Leaderboard) */}
+      <div className="w-full pt-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+          <div className="flex flex-col items-start text-left">
+            <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl flex items-center gap-3">
+              <Trophy className="w-7 h-7 text-amber-500" /> Top Global Leaderboard
+            </h2>
+            <p className="text-sm text-gray-500 mt-1 font-medium">
+              Highest accumulating scores from our most dedicated learners this month.
+            </p>
+          </div>
+          <button className="px-5 py-2.5 bg-gray-900 text-white text-xs font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-lg shadow-gray-900/20">
+            View Full Rankings
+          </button>
         </div>
 
-        {/* Struktur Tabel Konten Murni */}
-        <div className="w-full overflow-x-auto">
-          <table className="w-full min-w-[500px] border-collapse text-left text-black">
-
-            {/* Kepala Tabel */}
-            <thead>
-              <tr className="border-b border-cyan-500/20 text-xs font-bold text-gray-900 uppercase tracking-wider">
-                <th className="py-3 px-4 w-20">Rank</th>
-                <th className="py-3 px-4">Siswa</th>
-                <th className="py-3 px-4 text-center w-32">Kuis Diikuti</th>
-                <th className="py-3 px-4 text-right w-40">Total Skor</th>
-              </tr>
-            </thead>
-
-            {/* Isi Tabel */}
-            <tbody className="divide-y divide-gray-200 text-sm font-medium text-black">
-
-              {/* Baris Juara 1 */}
-              <tr className="group hover:bg-gray-100 transition-colors">
-                <td className="py-4 px-4 font-bold text-lg text-amber-600">
-                  🥇 1
-                </td>
-                <td className="py-4 px-4">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src="https://unsplash.com"
-                      alt="Avatar"
-                      className="h-8 w-8 rounded-full object-cover border border-gray-300"
-                    />
-                    <div className="flex flex-col items-start">
-                      <span className="font-bold text-black">Alex Rivera</span>
-                      <span className="text-xs text-gray-600">Kelas XIIA</span>
+        {/* Struktur Tabel Mewah */}
+        <div className="w-full overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl shadow-gray-200/50">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[600px] border-collapse text-left">
+              <thead>
+                <tr className="bg-gray-50/80 border-b border-gray-100 text-xs font-black text-gray-500 uppercase tracking-widest">
+                  <th className="py-5 px-6 w-24">Rank</th>
+                  <th className="py-5 px-6">Student Profil</th>
+                  <th className="py-5 px-6 text-center w-40">Quizzes Taken</th>
+                  <th className="py-5 px-6 text-right w-48">Accuracy Rate</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100 text-sm font-medium">
+                
+                {/* Baris Juara 1 */}
+                <tr className="group hover:bg-amber-50/50 transition-colors bg-gradient-to-r from-amber-50/30 to-transparent">
+                  <td className="py-5 px-6 font-black text-2xl text-amber-500">
+                    🥇 1
+                  </td>
+                  <td className="py-5 px-6">
+                    <div className="flex items-center gap-4">
+                      <div className="relative">
+                        <img src="https://unsplash.it/100/100?image=1027" alt="Avatar" className="h-12 w-12 rounded-2xl object-cover shadow-md shadow-amber-200" />
+                        <div className="absolute -bottom-1 -right-1 bg-green-500 w-3 h-3 rounded-full border-2 border-white"></div>
+                      </div>
+                      <div className="flex flex-col items-start">
+                        <span className="text-base font-bold text-gray-900">Alex Rivera</span>
+                        <span className="text-xs text-amber-600 font-semibold bg-amber-100 px-2 py-0.5 rounded-full mt-1">Class XIIA</span>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="py-4 px-4 text-center text-gray-800">42 Kuis</td>
-                <td className="py-4 px-4 text-right font-black text-black">98.5%</td>
-              </tr>
+                  </td>
+                  <td className="py-5 px-6 text-center">
+                    <span className="font-bold text-gray-700 bg-gray-100 px-3 py-1 rounded-lg">42</span>
+                  </td>
+                  <td className="py-5 px-6 text-right">
+                    <span className="font-black text-lg text-emerald-600">98.5%</span>
+                  </td>
+                </tr>
 
-              {/* Baris Juara 2 */}
-              <tr className="group hover:bg-gray-100 transition-colors">
-                <td className="py-4 px-4 font-bold text-lg text-gray-500">
-                  🥈 2
-                </td>
-                <td className="py-4 px-4">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src="https://unsplash.com"
-                      alt="Avatar"
-                      className="h-8 w-8 rounded-full object-cover border border-gray-300"
-                    />
-                    <div className="flex flex-col items-start">
-                      <span className="font-bold text-black">Budi Santoso</span>
-                      <span className="text-xs text-gray-600">Kelas XIIC</span>
+                {/* Baris Juara 2 */}
+                <tr className="group hover:bg-gray-50 transition-colors">
+                  <td className="py-5 px-6 font-black text-2xl text-gray-400">
+                    🥈 2
+                  </td>
+                  <td className="py-5 px-6">
+                    <div className="flex items-center gap-4">
+                      <div className="relative">
+                        <img src="https://unsplash.it/100/100?image=1025" alt="Avatar" className="h-10 w-10 rounded-2xl object-cover shadow-sm" />
+                      </div>
+                      <div className="flex flex-col items-start">
+                        <span className="text-base font-bold text-gray-900">Budi Santoso</span>
+                        <span className="text-xs text-gray-500 mt-0.5">Class XIIC</span>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="py-4 px-4 text-center text-gray-800">39 Kuis</td>
-                <td className="py-4 px-4 text-right font-black text-black">95.2%</td>
-              </tr>
+                  </td>
+                  <td className="py-5 px-6 text-center">
+                    <span className="font-bold text-gray-600">39</span>
+                  </td>
+                  <td className="py-5 px-6 text-right">
+                    <span className="font-bold text-lg text-emerald-500">95.2%</span>
+                  </td>
+                </tr>
 
-              {/* Baris Juara 3 */}
-              <tr className="group hover:bg-gray-100 transition-colors">
-                <td className="py-4 px-4 font-bold text-lg text-amber-800">
-                  🥉 3
-                </td>
-                <td className="py-4 px-4">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src="https://unsplash.com"
-                      alt="Avatar"
-                      className="h-8 w-8 rounded-full object-cover border border-gray-300"
-                    />
-                    <div className="flex flex-col items-start">
-                      <span className="font-bold text-black">Siti Aminah</span>
-                      <span className="text-xs text-gray-600">Kelas XIIB</span>
+                {/* Baris Juara 3 */}
+                <tr className="group hover:bg-gray-50 transition-colors">
+                  <td className="py-5 px-6 font-black text-2xl text-amber-700">
+                    🥉 3
+                  </td>
+                  <td className="py-5 px-6">
+                    <div className="flex items-center gap-4">
+                      <div className="relative">
+                        <img src="https://unsplash.it/100/100?image=1011" alt="Avatar" className="h-10 w-10 rounded-2xl object-cover shadow-sm" />
+                      </div>
+                      <div className="flex flex-col items-start">
+                        <span className="text-base font-bold text-gray-900">Siti Aminah</span>
+                        <span className="text-xs text-gray-500 mt-0.5">Class XIIB</span>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="py-4 px-4 text-center text-gray-800">45 Kuis</td>
-                <td className="py-4 px-4 text-right font-black text-black">92.8%</td>
-              </tr>
+                  </td>
+                  <td className="py-5 px-6 text-center">
+                    <span className="font-bold text-gray-600">45</span>
+                  </td>
+                  <td className="py-5 px-6 text-right">
+                    <span className="font-bold text-lg text-emerald-500">92.8%</span>
+                  </td>
+                </tr>
 
-              {/* Baris Peringkat Biasa (Peringkat 4) */}
-              <tr className="group hover:bg-gray-100 transition-colors">
-                <td className="py-4 px-4 font-bold text-gray-700 pl-7">
-                  4
-                </td>
-                <td className="py-4 px-4">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src="https://unsplash.com"
-                      alt="Avatar"
-                      className="h-8 w-8 rounded-full object-cover border border-gray-300"
-                    />
-                    <div className="flex flex-col items-start">
-                      <span className="font-bold text-black">Dimas Wijaya</span>
-                      <span className="text-xs text-gray-600">Kelas XIA</span>
+                {/* Baris Peringkat Biasa (Peringkat 4) */}
+                <tr className="group hover:bg-gray-50 transition-colors">
+                  <td className="py-5 px-6 font-black text-gray-400 pl-8 text-xl">
+                    4
+                  </td>
+                  <td className="py-5 px-6">
+                    <div className="flex items-center gap-4">
+                      <div className="relative">
+                        <img src="https://unsplash.it/100/100?image=1005" alt="Avatar" className="h-10 w-10 rounded-2xl object-cover shadow-sm opacity-90" />
+                      </div>
+                      <div className="flex flex-col items-start">
+                        <span className="text-base font-bold text-gray-800">Dimas Wijaya</span>
+                        <span className="text-xs text-gray-400 mt-0.5">Class XIA</span>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="py-4 px-4 text-center text-gray-800">35 Kuis</td>
-                <td className="py-4 px-4 text-right font-black text-black">89.0%</td>
-              </tr>
+                  </td>
+                  <td className="py-5 px-6 text-center">
+                    <span className="font-bold text-gray-600">35</span>
+                  </td>
+                  <td className="py-5 px-6 text-right">
+                    <span className="font-bold text-lg text-emerald-400">89.0%</span>
+                  </td>
+                </tr>
 
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
