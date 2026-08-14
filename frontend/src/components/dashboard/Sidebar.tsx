@@ -4,10 +4,8 @@ import {
   BookOpen,
   ChevronLeft,
   LayoutDashboard,
-  Menu,
-  Settings,
-  Trophy,
-  LogOut
+  LogOut,
+  Menu
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -29,8 +27,6 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
   const menuItems = [
     { name: 'Dashboard', href: '/home', icon: LayoutDashboard },
     { name: 'Quizzes', href: '/quiz', icon: BookOpen },
-    { name: 'Leaderboard', href: '/leaderboard', icon: Trophy },
-    { name: 'Settings', href: '/settings', icon: Settings },
   ]
 
   return (
