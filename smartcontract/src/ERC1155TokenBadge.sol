@@ -5,76 +5,111 @@ import "./ERC1155/IERC1155.sol";
 import "./ERC20/ERC20Token.sol";
 import "./ERC1155/IERC1155TokenReceiver.sol";
 
+/// @title School System Contract
+/// @notice Manages exam scores and rewards students with tokens and ERC1155 badges.
+/// @dev Inherits from ERC20Token for base token functionality and implements IERC1155 for badges.
 contract SchoolSystem is ERC20Token("School Token", "SCT", 18), IERC1155 {
-    address public immutable guruAdmin;
+    /// @notice The address of the teacher/admin who has privileged access.
+    address public immutable teacherAdmin;
 
-    uint256 public constant BADGE_MATEMATIKA = 1;
-    uint256 public constant BADGE_SAINS = 2;
+    /// @notice ID for the Mathematics badge.
+    uint256 public constant BADGE_MATH = 1;
 
+    /// @notice ID for the Science badge.
+    uint256 public constant BADGE_SCIENCE = 2;
+
+    /// @dev Internal mapping of badge balances: badgeId => owner => balance.
     mapping(uint256 => mapping(address => uint256)) private _badgeBalances;
+
+    /// @dev Internal mapping of operator approvals: owner => operator => approved.
     mapping(address => mapping(address => bool)) private _operatorApprovals;
 
-    struct DataUjian {
-        uint256 nilai;
-        bool sudahClaim;
-        bool terdaftar;
+    /// @dev Structure to store exam data for a student.
+    struct ExamData {
+        uint256 score;
+        bool hasClaimed;
+        bool isRegistered;
     }
-    
-    mapping(address => mapping(string => DataUjian)) public riwayatUjianSiswa;
 
+    /// @notice Mapping from student address and subject name to their exam data.
+    mapping(address => mapping(string => ExamData)) public studentExamHistory;
+
+    /// @notice Initializes the contract and sets the deployer as the admin.
     constructor() {
-        guruAdmin = msg.sender;
+        teacherAdmin = msg.sender;
     }
 
-    function inputNilaiUjian(address _siswa, string memory _mapel, uint256 _nilai) external {
-        require(msg.sender == guruAdmin, "Hanya Guru/Admin yang bisa input nilai!");
-        require(_nilai <= 100, "Nilai maksimal adalah 100");
+    /// @notice Inputs an exam score for a student.
+    /// @dev Can only be called by the admin.
+    /// @param _student The address of the student.
+    /// @param _subject The subject name.
+    /// @param _score The score achieved (max 100).
+    function inputExamScore(address _student, string memory _subject, uint256 _score) external {
+        require(msg.sender == teacherAdmin, "Only Teacher/Admin can input scores!");
+        require(_score <= 100, "Maximum score is 100");
 
-        riwayatUjianSiswa[_siswa][_mapel] = DataUjian({
-            nilai: _nilai,
-            sudahClaim: false,
-            terdaftar: true
-        });
+        studentExamHistory[_student][_subject] = ExamData({score: _score, hasClaimed: false, isRegistered: true});
     }
 
-    function claimHadiahUjian(string memory _mapel) external {
-        DataUjian storage ujian = riwayatUjianSiswa[msg.sender][_mapel];
+    /// @notice Claims the reward for a specific exam subject.
+    /// @dev Mints ERC20 tokens and an ERC1155 badge if the score is at least 80.
+    /// @param _subject The subject name to claim the reward for.
+    function claimExamReward(string memory _subject) external {
+        ExamData storage exam = studentExamHistory[msg.sender][_subject];
 
-        require(ujian.terdaftar, "Data ujian tidak ditemukan");
-        require(ujian.nilai >= 80, "Maaf, nilai Anda di bawah 80. Tidak bisa claim!");
-        require(!ujian.sudahClaim, "Anda sudah melakukan claim untuk mata pelajaran ini");
+        require(exam.isRegistered, "Exam data not found");
+        require(exam.score >= 80, "Sorry, your score is below 80. Cannot claim!");
+        require(!exam.hasClaimed, "You have already claimed for this subject");
 
-        ujian.sudahClaim = true;
+        exam.hasClaimed = true;
 
         _mint(msg.sender, 100 * 10 ** uint256(decimals));
 
         uint256 targetBadgeId;
-        if (keccak256(abi.encodePacked(_mapel)) == keccak256(abi.encodePacked("Matematika"))) {
-            targetBadgeId = BADGE_MATEMATIKA;
+        if (keccak256(abi.encodePacked(_subject)) == keccak256(abi.encodePacked("Math"))) {
+            targetBadgeId = BADGE_MATH;
         } else {
-            targetBadgeId = BADGE_SAINS;
+            targetBadgeId = BADGE_SCIENCE;
         }
 
         _mintSingle1155(msg.sender, targetBadgeId, 1, "");
     }
 
+    /// @notice Internal function to mint a single ERC1155 token.
+    /// @param _to The recipient address.
+    /// @param _id The token ID to mint.
+    /// @param _value The amount of tokens to mint.
+    /// @param _data Additional data to pass to the receiver contract.
     function _mintSingle1155(address _to, uint256 _id, uint256 _value, bytes memory _data) internal {
-        require(_to != address(0), "Tidak bisa mint ke alamat kosong");
+        require(_to != address(0), "Cannot mint to zero address");
 
         _badgeBalances[_id][_to] += _value;
 
         emit TransferSingle(msg.sender, address(0), _to, _id, _value);
 
-        require(_checkOnERC1155Received(address(0), _to, _id, _value, _data), "Penerima menolak token ERC-1155");
+        require(_checkOnERC1155Received(address(0), _to, _id, _value, _data), "Receiver rejected ERC1155 token");
     }
 
+    /// @notice Gets the balance of an account's tokens.
+    /// @param _owner The address of the token holder.
+    /// @param _id ID of the token.
+    /// @return The _owner's balance of the token type requested.
     function balanceOf(address _owner, uint256 _id) public view override returns (uint256) {
-        require(_owner != address(0), "Alamat tidak valid");
+        require(_owner != address(0), "Invalid address");
         return _badgeBalances[_id][_owner];
     }
 
-    function balanceOfBatch(address[] calldata _owners, uint256[] calldata _ids) public view override returns (uint256[] memory) {
-        require(_owners.length == _ids.length, "Panjang array tidak sama");
+    /// @notice Gets the balance of multiple account/token pairs.
+    /// @param _owners The addresses of the token holders.
+    /// @param _ids The IDs of the tokens.
+    /// @return An array containing the balance of each requested account/token pair.
+    function balanceOfBatch(address[] calldata _owners, uint256[] calldata _ids)
+        public
+        view
+        override
+        returns (uint256[] memory)
+    {
+        require(_owners.length == _ids.length, "Array lengths do not match");
 
         uint256[] memory batchBalances = new uint256[](_owners.length);
         for (uint256 i = 0; i < _owners.length; i++) {
@@ -83,48 +118,85 @@ contract SchoolSystem is ERC20Token("School Token", "SCT", 18), IERC1155 {
         return batchBalances;
     }
 
-    function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _value, bytes calldata _data) public override {
-        require(_from == msg.sender || isApprovedForAll(_from, msg.sender), "Bukan pemilik atau operator");
-        require(_to != address(0), "Tidak bisa kirim ke alamat kosong");
-        require(_badgeBalances[_id][_from] >= _value, "Saldo NFT tidak cukup");
+    /// @notice Transfers `_value` amount of an `_id` from the `_from` address to the `_to` address specified.
+    /// @param _from Source address.
+    /// @param _to Target address.
+    /// @param _id ID of the token type.
+    /// @param _value Transfer amount.
+    /// @param _data Additional data with no specified format, MUST be sent unaltered in call to `onERC1155Received` on `_to`.
+    function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _value, bytes calldata _data)
+        public
+        override
+    {
+        require(_from == msg.sender || isApprovedForAll(_from, msg.sender), "Not owner or approved operator");
+        require(_to != address(0), "Cannot transfer to zero address");
+        require(_badgeBalances[_id][_from] >= _value, "Insufficient NFT balance");
 
         _badgeBalances[_id][_from] -= _value;
         _badgeBalances[_id][_to] += _value;
 
         emit TransferSingle(msg.sender, _from, _to, _id, _value);
 
-        require(_checkOnERC1155Received(_from, _to, _id, _value, _data), "Penerima kontrak menolak token");
+        require(_checkOnERC1155Received(_from, _to, _id, _value, _data), "Receiver rejected token transfer");
     }
 
+    /// @notice Enable or disable approval for a third party ("operator") to manage all of the caller's tokens.
+    /// @param _operator Address to add to the set of authorized operators.
+    /// @param _approved True if the operator is approved, false to revoke approval.
     function setApprovalForAll(address _operator, bool _approved) public override {
         _operatorApprovals[msg.sender][_operator] = _approved;
         emit ApprovalForAll(msg.sender, _operator, _approved);
     }
 
-    // Menggunakan JONGKOK OVERRIDE untuk mencocokkan overloading ERC-20 vs ERC-1155
+    /// @notice Queries the approval status of an operator for a given owner.
+    /// @dev Used OVERRIDE to match overloading ERC-20 vs ERC-1155
+    /// @param _owner The owner of the tokens.
+    /// @param _operator Address of authorized operator.
+    /// @return True if the operator is approved, false if not.
     function isApprovedForAll(address _owner, address _operator) public view override returns (bool) {
         return _operatorApprovals[_owner][_operator];
     }
 
-    // PERBAIKAN WARNING: Diubah ke PURE dan nama parameter disembunyikan menggunakan /* */
+    /// @notice Transfers `_values` amount(s) of `_ids` from the `_from` address to the `_to` address specified (with safety call).
+    /// @dev Disabled feature in this school system.
     function safeBatchTransferFrom(
-        address /* _from */, 
-        address /* _to */, 
-        uint256[] calldata /* _ids */, 
-        uint256[] calldata /* _values */, 
+        address,
+        /* _from */
+        address,
+        /* _to */
+        uint256[] calldata,
+        /* _ids */
+        uint256[] calldata,
+        /* _values */
         bytes calldata /* _data */
-    ) public pure override {
-        revert("Fitur Batch Transfer tidak diaktifkan di sekolah ini");
+    )
+        public
+        pure
+        override
+    {
+        revert("Batch Transfer feature is disabled in this school system");
     }
-    
-    function _checkOnERC1155Received(address _from, address _to, uint256 _id, uint256 _value, bytes memory _data) internal returns (bool) {
-        if (_to.code.length > 0) { 
-            try IERC1155TokenReceiver(_to).onERC1155Received(msg.sender, _from, _id, _value, _data) returns (bytes4 retval) {
+
+    /// @notice Internal function to invoke `onERC1155Received` on a target address.
+    /// @param _from The address which previously owned the token.
+    /// @param _to The target address that will receive the token.
+    /// @param _id The ID of the token being transferred.
+    /// @param _value The amount of tokens being transferred.
+    /// @param _data Additional data to pass to the receiver contract.
+    /// @return True if the transfer is accepted, false otherwise.
+    function _checkOnERC1155Received(address _from, address _to, uint256 _id, uint256 _value, bytes memory _data)
+        internal
+        returns (bool)
+    {
+        if (_to.code.length > 0) {
+            try IERC1155TokenReceiver(_to).onERC1155Received(msg.sender, _from, _id, _value, _data) returns (
+                bytes4 retval
+            ) {
                 return retval == IERC1155TokenReceiver.onERC1155Received.selector;
             } catch {
                 return false;
             }
         }
-        return true; 
+        return true;
     }
 }

@@ -99,7 +99,7 @@ export function ConnectButton() {
               <button
                 key={connector.uid}
                 onClick={() => {
-                  connect({ connector, chainId: 10143 });
+                  connect({ connector });
                   setIsOpen(false);
                 }}
                 className="group flex w-full items-center justify-between rounded-2xl px-3 py-3 text-left transition-all duration-200 hover:bg-white/[0.04] focus:bg-blue-500/10 focus:outline-none"

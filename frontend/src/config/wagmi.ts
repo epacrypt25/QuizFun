@@ -25,7 +25,7 @@ export const monadTestnet = defineChain({
 })
 
 export const config = createConfig({
-  chains: [monadTestnet, baseSepolia, mainnet, sepolia],
+  chains: [baseSepolia, monadTestnet, mainnet, sepolia],
   transports: {
     [monadTestnet.id]: http(),
     [baseSepolia.id]: http(),
