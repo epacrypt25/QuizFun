@@ -27,6 +27,8 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
   const menuItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Quizzes', href: '/quiz', icon: BookOpen },
+    { name: 'Mint Token', href: '/mint', icon: BookOpen },
+    { name: 'Profile', href: '/profile', icon: BookOpen },
   ]
 
   return (
