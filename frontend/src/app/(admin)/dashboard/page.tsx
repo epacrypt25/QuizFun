@@ -116,7 +116,7 @@ export default function StudentDashboard() {
               <thead>
                 <tr className="bg-gray-50/80 border-b border-gray-100 text-[10px] font-black text-gray-500 uppercase tracking-widest sm:text-xs">
                   <th className="py-3 px-3 w-28 sm:py-5 sm:px-6 sm:w-36">Waktu</th>
-                  <th className="py-3 px-3 sm:py-5 sm:px-6">User & Kuis</th>
+                  <th className="py-3 px-3 sm:py-5 sm:px-6">User</th>
                   <th className="py-3 px-3 text-center w-24 sm:py-5 sm:px-6 sm:w-28">Skor</th>
                   <th className="py-3 px-3 w-32 sm:py-5 sm:px-6 sm:w-44">Blockchain TX</th>
                   <th className="py-3 px-3 text-right w-28 sm:py-5 sm:px-6 sm:w-36">Status</th>
@@ -135,7 +135,6 @@ export default function StudentDashboard() {
                   <td className="py-3 px-3 sm:py-5 sm:px-6">
                     <div className="flex flex-col items-start min-w-0">
                       <span className="text-xs font-bold text-gray-900 truncate w-full sm:text-base">Alex Rivera</span>
-                      <span className="text-[10px] text-indigo-600 font-semibold bg-indigo-50 px-1.5 py-0.5 rounded mt-0.5 sm:text-xs sm:px-2">Kuis Matematika Dasar</span>
                     </div>
                   </td>
                   <td className="py-3 px-3 text-center sm:py-5 sm:px-6">
@@ -173,7 +172,6 @@ export default function StudentDashboard() {
                   <td className="py-3 px-3 sm:py-5 sm:px-6">
                     <div className="flex flex-col items-start min-w-0">
                       <span className="text-xs font-bold text-gray-900 truncate w-full sm:text-base">Budi Santoso</span>
-                      <span className="text-[10px] text-indigo-600 font-semibold bg-indigo-50 px-1.5 py-0.5 rounded mt-0.5 sm:text-xs sm:px-2">Kuis Sejarah Indonesia</span>
                     </div>
                   </td>
                   <td className="py-3 px-3 text-center sm:py-5 sm:px-6">
@@ -202,7 +200,6 @@ export default function StudentDashboard() {
                   <td className="py-3 px-3 sm:py-5 sm:px-6">
                     <div className="flex flex-col items-start min-w-0">
                       <span className="text-xs font-bold text-gray-900 truncate w-full sm:text-base">Siti Aminah</span>
-                      <span className="text-[10px] text-indigo-600 font-semibold bg-indigo-50 px-1.5 py-0.5 rounded mt-0.5 sm:text-xs sm:px-2">Kuis Bahasa Inggris</span>
                     </div>
                   </td>
                   <td className="py-3 px-3 text-center sm:py-5 sm:px-6">
