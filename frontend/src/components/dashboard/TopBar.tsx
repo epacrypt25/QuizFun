@@ -27,7 +27,7 @@ export function TopBar({ onMenuClick }: { onMenuClick?: () => void }) {
   }
 
   return (
-    <header className="relative z-20 flex h-16 items-center justify-between px-4 md:px-6 backdrop-blur-md bg-white/50 dark:bg-gray-900/50 border-b border-gray-200/50 dark:border-gray-800/50">
+    <header className="relative z-20 flex fixed h-16 items-center justify-between px-4 md:px-6 backdrop-blur-md bg-white/50 dark:bg-gray-900/50 border-b border-gray-200/50 dark:border-gray-800/50">
 
       {/* SISI KIRI: Nama Halaman Aktif (Dinamis & Informatif) */}
       <div className="flex items-center gap-3">

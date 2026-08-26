@@ -25,7 +25,7 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
   const { disconnect } = useDisconnect()
 
   const menuItems = [
-    { name: 'Dashboard', href: '/home', icon: LayoutDashboard },
+    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Quizzes', href: '/quiz', icon: BookOpen },
   ]
 

@@ -1,14 +1,12 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Trophy, Target, Coins, TrendingUp } from 'lucide-react'
-import { Web3Status } from '@/components/dashboard/Web3Status'
+import { Coins, Target, TrendingUp, Trophy } from 'lucide-react'
 
 export default function StudentDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-fade-in-up">
-      <Web3Status />
       
       {/* Kontainer Grid Responsif untuk Metrik */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full text-white">
@@ -112,113 +110,121 @@ export default function StudentDashboard() {
         </div>
 
         {/* Struktur Tabel Mewah */}
-        <div className="w-full overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl shadow-gray-200/50">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[600px] border-collapse text-left">
+        <div className="w-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl shadow-gray-200/50 sm:rounded-3xl">
+          <div className="w-full overflow-x-auto">
+            <table className="w-full min-w-[500px] border-collapse text-left table-auto">
               <thead>
-                <tr className="bg-gray-50/80 border-b border-gray-100 text-xs font-black text-gray-500 uppercase tracking-widest">
-                  <th className="py-5 px-6 w-24">Rank</th>
-                  <th className="py-5 px-6">Student Profil</th>
-                  <th className="py-5 px-6 text-center w-40">Quizzes Taken</th>
-                  <th className="py-5 px-6 text-right w-48">Accuracy Rate</th>
+                <tr className="bg-gray-50/80 border-b border-gray-100 text-[10px] font-black text-gray-500 uppercase tracking-widest sm:text-xs">
+                  <th className="py-3 px-3 w-28 sm:py-5 sm:px-6 sm:w-36">Waktu</th>
+                  <th className="py-3 px-3 sm:py-5 sm:px-6">User & Kuis</th>
+                  <th className="py-3 px-3 text-center w-24 sm:py-5 sm:px-6 sm:w-28">Skor</th>
+                  <th className="py-3 px-3 w-32 sm:py-5 sm:px-6 sm:w-44">Blockchain TX</th>
+                  <th className="py-3 px-3 text-right w-28 sm:py-5 sm:px-6 sm:w-36">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 text-sm font-medium">
-                
-                {/* Baris Juara 1 */}
-                <tr className="group hover:bg-amber-50/50 transition-colors bg-gradient-to-r from-amber-50/30 to-transparent">
-                  <td className="py-5 px-6 font-black text-2xl text-amber-500">
-                    🥇 1
-                  </td>
-                  <td className="py-5 px-6">
-                    <div className="flex items-center gap-4">
-                      <div className="relative">
-                        <img src="https://unsplash.it/100/100?image=1027" alt="Avatar" className="h-12 w-12 rounded-2xl object-cover shadow-md shadow-amber-200" />
-                        <div className="absolute -bottom-1 -right-1 bg-green-500 w-3 h-3 rounded-full border-2 border-white"></div>
-                      </div>
-                      <div className="flex flex-col items-start">
-                        <span className="text-base font-bold text-gray-900">Alex Rivera</span>
-                        <span className="text-xs text-amber-600 font-semibold bg-amber-100 px-2 py-0.5 rounded-full mt-1">Class XIIA</span>
-                      </div>
+              <tbody className="divide-y divide-gray-100 text-xs font-medium sm:text-sm">
+
+                {/* Riwayat 1 */}
+                <tr className="group hover:bg-gray-50/50 transition-colors">
+                  <td className="py-3 px-3 text-gray-400 sm:py-5 sm:px-6">
+                    <div className="flex flex-col">
+                      <span className="font-bold text-gray-700 sm:text-sm text-xs">Hari ini</span>
+                      <span className="text-[10px] text-gray-400 mt-0.5 sm:text-xs">14:20 WIB</span>
                     </div>
                   </td>
-                  <td className="py-5 px-6 text-center">
-                    <span className="font-bold text-gray-700 bg-gray-100 px-3 py-1 rounded-lg">42</span>
+                  <td className="py-3 px-3 sm:py-5 sm:px-6">
+                    <div className="flex flex-col items-start min-w-0">
+                      <span className="text-xs font-bold text-gray-900 truncate w-full sm:text-base">Alex Rivera</span>
+                      <span className="text-[10px] text-indigo-600 font-semibold bg-indigo-50 px-1.5 py-0.5 rounded mt-0.5 sm:text-xs sm:px-2">Kuis Matematika Dasar</span>
+                    </div>
                   </td>
-                  <td className="py-5 px-6 text-right">
-                    <span className="font-black text-lg text-emerald-600">98.5%</span>
+                  <td className="py-3 px-3 text-center sm:py-5 sm:px-6">
+                    <span className="font-black text-sm text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded sm:text-base sm:px-3 sm:py-1">100</span>
+                  </td>
+                  <td className="py-3 px-3 sm:py-5 sm:px-6">
+                    {/* Tautan bukti blockchain dengan hash yang dipendekkan */}
+                    <a
+                      href="https://etherscan.io"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 font-mono text-[11px] text-indigo-600 hover:text-indigo-800 hover:underline bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded transition-all sm:text-xs sm:px-2"
+                    >
+                      <span>0x71c...3a93</span>
+                      <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </td>
+                  <td className="py-3 px-3 text-right sm:py-5 sm:px-6">
+                    <span className="inline-flex items-center text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full sm:text-xs sm:px-3 sm:py-1">
+                      Sukses
+                    </span>
                   </td>
                 </tr>
 
-                {/* Baris Juara 2 */}
+                {/* Riwayat 2 */}
                 <tr className="group hover:bg-gray-50 transition-colors">
-                  <td className="py-5 px-6 font-black text-2xl text-gray-400">
-                    🥈 2
-                  </td>
-                  <td className="py-5 px-6">
-                    <div className="flex items-center gap-4">
-                      <div className="relative">
-                        <img src="https://unsplash.it/100/100?image=1025" alt="Avatar" className="h-10 w-10 rounded-2xl object-cover shadow-sm" />
-                      </div>
-                      <div className="flex flex-col items-start">
-                        <span className="text-base font-bold text-gray-900">Budi Santoso</span>
-                        <span className="text-xs text-gray-500 mt-0.5">Class XIIC</span>
-                      </div>
+                  <td className="py-3 px-3 text-gray-400 sm:py-5 sm:px-6">
+                    <div className="flex flex-col">
+                      <span className="font-bold text-gray-700 sm:text-sm text-xs">Kemarin</span>
+                      <span className="text-[10px] text-gray-400 mt-0.5 sm:text-xs">09:15 WIB</span>
                     </div>
                   </td>
-                  <td className="py-5 px-6 text-center">
-                    <span className="font-bold text-gray-600">39</span>
+                  <td className="py-3 px-3 sm:py-5 sm:px-6">
+                    <div className="flex flex-col items-start min-w-0">
+                      <span className="text-xs font-bold text-gray-900 truncate w-full sm:text-base">Budi Santoso</span>
+                      <span className="text-[10px] text-indigo-600 font-semibold bg-indigo-50 px-1.5 py-0.5 rounded mt-0.5 sm:text-xs sm:px-2">Kuis Sejarah Indonesia</span>
+                    </div>
                   </td>
-                  <td className="py-5 px-6 text-right">
-                    <span className="font-bold text-lg text-emerald-500">95.2%</span>
+                  <td className="py-3 px-3 text-center sm:py-5 sm:px-6">
+                    <span className="font-black text-sm text-gray-700 bg-gray-100 px-2 py-0.5 rounded sm:text-base sm:px-3 sm:py-1">90</span>
+                  </td>
+                  <td className="py-3 px-3 sm:py-5 sm:px-6">
+                    <span className="font-mono text-[11px] text-gray-400 sm:text-xs italic">
+                      Generating...
+                    </span>
+                  </td>
+                  <td className="py-3 px-3 text-right sm:py-5 sm:px-6">
+                    <span className="inline-flex items-center text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full sm:text-xs sm:px-3 sm:py-1">
+                      Proses
+                    </span>
                   </td>
                 </tr>
 
-                {/* Baris Juara 3 */}
+                {/* Riwayat 3 */}
                 <tr className="group hover:bg-gray-50 transition-colors">
-                  <td className="py-5 px-6 font-black text-2xl text-amber-700">
-                    🥉 3
-                  </td>
-                  <td className="py-5 px-6">
-                    <div className="flex items-center gap-4">
-                      <div className="relative">
-                        <img src="https://unsplash.it/100/100?image=1011" alt="Avatar" className="h-10 w-10 rounded-2xl object-cover shadow-sm" />
-                      </div>
-                      <div className="flex flex-col items-start">
-                        <span className="text-base font-bold text-gray-900">Siti Aminah</span>
-                        <span className="text-xs text-gray-500 mt-0.5">Class XIIB</span>
-                      </div>
+                  <td className="py-3 px-3 text-gray-400 sm:py-5 sm:px-6">
+                    <div className="flex flex-col">
+                      <span className="font-bold text-gray-700 sm:text-sm text-xs">24 Agu 2026</span>
+                      <span className="text-[10px] text-gray-400 mt-0.5 sm:text-xs">17:00 WIB</span>
                     </div>
                   </td>
-                  <td className="py-5 px-6 text-center">
-                    <span className="font-bold text-gray-600">45</span>
-                  </td>
-                  <td className="py-5 px-6 text-right">
-                    <span className="font-bold text-lg text-emerald-500">92.8%</span>
-                  </td>
-                </tr>
-
-                {/* Baris Peringkat Biasa (Peringkat 4) */}
-                <tr className="group hover:bg-gray-50 transition-colors">
-                  <td className="py-5 px-6 font-black text-gray-400 pl-8 text-xl">
-                    4
-                  </td>
-                  <td className="py-5 px-6">
-                    <div className="flex items-center gap-4">
-                      <div className="relative">
-                        <img src="https://unsplash.it/100/100?image=1005" alt="Avatar" className="h-10 w-10 rounded-2xl object-cover shadow-sm opacity-90" />
-                      </div>
-                      <div className="flex flex-col items-start">
-                        <span className="text-base font-bold text-gray-800">Dimas Wijaya</span>
-                        <span className="text-xs text-gray-400 mt-0.5">Class XIA</span>
-                      </div>
+                  <td className="py-3 px-3 sm:py-5 sm:px-6">
+                    <div className="flex flex-col items-start min-w-0">
+                      <span className="text-xs font-bold text-gray-900 truncate w-full sm:text-base">Siti Aminah</span>
+                      <span className="text-[10px] text-indigo-600 font-semibold bg-indigo-50 px-1.5 py-0.5 rounded mt-0.5 sm:text-xs sm:px-2">Kuis Bahasa Inggris</span>
                     </div>
                   </td>
-                  <td className="py-5 px-6 text-center">
-                    <span className="font-bold text-gray-600">35</span>
+                  <td className="py-3 px-3 text-center sm:py-5 sm:px-6">
+                    <span className="font-black text-sm text-gray-700 bg-gray-100 px-2 py-0.5 rounded sm:text-base sm:px-3 sm:py-1">85</span>
                   </td>
-                  <td className="py-5 px-6 text-right">
-                    <span className="font-bold text-lg text-emerald-400">89.0%</span>
+                  <td className="py-3 px-3 sm:py-5 sm:px-6">
+                    <a
+                      href="https://etherscan.io"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 font-mono text-[11px] text-indigo-600 hover:text-indigo-800 hover:underline bg-gray-50 border border-gray-100 px-1.5 py-0.5 rounded transition-all sm:text-xs sm:px-2"
+                    >
+                      <span>0x3f8...9b12</span>
+                      <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </td>
+                  <td className="py-3 px-3 text-right sm:py-5 sm:px-6">
+                    <span className="inline-flex items-center text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full sm:text-xs sm:px-3 sm:py-1">
+                      Sukses
+                    </span>
                   </td>
                 </tr>
 
