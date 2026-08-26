@@ -85,17 +85,7 @@ export default function StudentDashboard() {
 
 
                 {/* 2. BAGIAN TABEL: DAFTAR KUIS (Sisa Lebar 65% di Desktop) */}
-                <div className="w-full lg:w-[65%] flex flex-col items-start bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-                    {/* Header Card */}
-                    <div className="text-left mb-6 w-full">
-                        <h2 className="text-xl lilita-one-regular font-extrabold tracking-tight text-gray-900 sm:text-2xl">
-                            Daftar Kuis Aktif
-                        </h2>
-                        <p className="text-xs text-gray-500 mt-1">
-                            Daftar seluruh kuis aktif yang dapat diakses dan dikerjakan oleh siswa.
-                        </p>
-                    </div>
-
+                <div className="w-full lg:w-[65%] flex flex-col items-start border border-gray-200 rounded-2xl shadow-sm">
                     {/* Pembungkus Tabel Berbentuk Card Modern */}
                     <div className="w-full overflow-hidden border border-gray-200 rounded-xl">
                         <div className="w-full overflow-x-auto">
