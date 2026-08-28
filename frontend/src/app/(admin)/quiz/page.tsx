@@ -48,29 +48,14 @@ export default function StudentDashboard() {
                         </div>
 
                         {/* Input Jumlah Soal & Reward Token (Berjejer) */}
-                        <div className="flex gap-4 w-full">
-                            <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                    Jumlah Soal
-                                </label>
-                                <input
-                                    type="number"
-                                    required
-                                    placeholder="10"
-                                    className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
-                                />
-                            </div>
-                            <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                    Reward Token (QW3)
-                                </label>
-                                <input
-                                    type="number"
-                                    required
-                                    placeholder="50"
-                                    className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
-                                />
-                            </div>
+                        <div className="flex flex-col gap-1 w-full">
+                            <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                Deskripsi Kuis
+                            </label>
+                            <textarea
+                                placeholder="Masukkan deskripsi kuis..."
+                                className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                            />
                         </div>
 
                         {/* Tombol Submit Buat Kuis */}
