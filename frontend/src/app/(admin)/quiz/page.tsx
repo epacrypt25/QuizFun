@@ -1,6 +1,90 @@
 'use client'
 
+import { createClient } from '@/utils/supabase/client'
+import { FormEvent, useEffect, useState } from 'react'
+
+// 1. Definisikan tipe data Quiz sesuai kolom nyata di DB Supabase Anda
+interface Quiz {
+    id: number
+    title: string
+    type: string | null
+    description: string | null
+    created_at?: string
+}
+
 export default function StudentDashboard() {
+
+    const supabase = createClient()
+
+    // State manajemen komponen
+    const [quizzes, setQuizzes] = useState<Quiz[]>([])
+    const [title, setTitle] = useState<string>('')
+    const [typeQuiz, setTypeQuiz] = useState<string>('')
+    const [description, setDescription] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(true)
+    const [submitting, setSubmitting] = useState<boolean>(false)
+
+    // 2. FUNGSI FETCH: Mengambil daftar kuis dari Supabase
+    async function fetchQuizzes() {
+        setLoading(true)
+        try {
+            const { data, error } = await supabase
+                .from('quiz') // Pastikan hanya tertulis kata 'quiz' tanpa variasi lain
+                .select('*')
+                .order('id', { ascending: false })
+
+            if (error) {
+                throw error
+            }
+
+            if (data) {
+                setQuizzes(data as Quiz[])
+            }
+        } catch (err: any) {
+            console.error('Gagal memuat kuis:', err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    // Jalankan fungsi fetch saat pertama kali halaman terbuka
+    useEffect(() => {
+        fetchQuizzes()
+    }, [])
+
+    // 3. FUNGSI INSERT: Menyimpan data kuis baru ke database Supabase
+    async function handleCreateQuiz(e: FormEvent) {
+        e.preventDefault()
+        if (!title.trim()) return
+
+        setSubmitting(true)
+        try {
+            const { error } = await supabase
+                .from('quiz')
+                .insert([
+                    {
+                        title_quiz: title,
+                        desc_quiz: description,
+                        // 💡 TRICK: Jika typeQuiz kosong/null, otomatis simpan sebagai 'Umum'
+                        type_quiz: typeQuiz || 'Umum'
+                    }
+                ])
+
+            if (error) throw error
+
+            // Reset Form
+            setTitle('')
+            setDescription('')
+            setTypeQuiz('') // Kembalikan ke kosong jika menggunakan string
+            await fetchQuizzes()
+        } catch (err: any) {
+            alert(`Gagal menyimpan kuis: ${err.message}`)
+        } finally {
+            setSubmitting(false)
+        }
+    }
+
+
     return (
         <div className="max-w-7xl mx-auto space-y-10 animate-fade-in-up text-black ">
 
@@ -19,8 +103,7 @@ export default function StudentDashboard() {
                         </p>
                     </div>
 
-                    {/* Form Konten */}
-                    <form className="w-full flex flex-col gap-4 text-left" onSubmit={(e) => e.preventDefault()}>
+                    <form className="w-full flex flex-col gap-4 text-left" onSubmit={handleCreateQuiz}>
                         {/* Input Judul Kuis */}
                         <div className="flex flex-col gap-1 w-full">
                             <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
@@ -29,30 +112,41 @@ export default function StudentDashboard() {
                             <input
                                 type="text"
                                 required
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
                                 placeholder="Contoh: Pengenalan Blockchain Dasar"
                                 className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                             />
                         </div>
 
-                        {/* Input Kategori */}
+                        {/* Input Kategori / Type Quiz (Kini Sudah Dinamis Terhubung ke Database) */}
                         <div className="flex flex-col gap-1 w-full">
                             <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
                                 Kategori
                             </label>
-                            <select className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10">
-                                <option>Web3 / Crypto</option>
-                                <option>Programming</option>
-                                <option>Sains / Matematika</option>
-                                <option>Umum</option>
+                            <select
+                                value={typeQuiz || ''} // Handle jika nilainya null agar tidak error di HTML
+                                required // Wajib diisi sebelum tombol submit bisa diklik
+                                onChange={(e) => setTypeQuiz(e.target.value)}
+                                className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                            >
+                                {/* Pilihan default kosong saat pertama kali halaman dimuat */}
+                                <option value="" disabled>-- Pilih Kategori Kuis --</option>
+                                <option value="Web3 / Crypto">Web3 / Crypto</option>
+                                <option value="Programming">Programming</option>
+                                <option value="Sains / Matematika">Sains / Matematika</option>
+                                <option value="Umum">Umum</option>
                             </select>
                         </div>
 
-                        {/* Input Jumlah Soal & Reward Token (Berjejer) */}
+                        {/* Input Deskripsi Kuis */}
                         <div className="flex flex-col gap-1 w-full">
                             <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
                                 Deskripsi Kuis
                             </label>
                             <textarea
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
                                 placeholder="Masukkan deskripsi kuis..."
                                 className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                             />
@@ -61,16 +155,18 @@ export default function StudentDashboard() {
                         {/* Tombol Submit Buat Kuis */}
                         <button
                             type="submit"
-                            className="w-full mt-2 rounded-xl bg-blue-600 hover:bg-blue-700 px-5 py-3 text-sm font-bold text-white transition-all shadow-md shadow-blue-600/10 hover:-translate-y-0.5 active:translate-y-0 text-center"
+                            disabled={submitting}
+                            className="w-full mt-2 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 px-5 py-3 text-sm font-bold text-white transition-all shadow-md shadow-blue-600/10 hover:-translate-y-0.5 active:translate-y-0 text-center"
                         >
-                            Simpan Kuis Baru
+                            {submitting ? 'Menyimpan ke Supabase...' : 'Simpan Kuis Baru'}
                         </button>
                     </form>
+
                 </div>
 
 
                 {/* 2. BAGIAN TABEL: DAFTAR KUIS (Sisa Lebar 65% di Desktop) */}
-                <div className="w-full lg:w-[65%] flex flex-col items-start border border-gray-200 rounded-2xl shadow-sm">
+                <div className="w-full lg:w-[65%] flex flex-col items-start border border-gray-200 rounded-2xl shadow-sm bg-white">
                     {/* Pembungkus Tabel Berbentuk Card Modern */}
                     <div className="w-full overflow-hidden border border-gray-200 rounded-xl">
                         <div className="w-full overflow-x-auto">
@@ -80,38 +176,59 @@ export default function StudentDashboard() {
                                         <th className="py-3.5 px-4">Kuis</th>
                                         <th className="py-3.5 px-4 w-32">Kategori</th>
                                         <th className="py-3.5 px-4 text-center w-24">Soal</th>
-                                        <th className="py-3.5 px-4 text-right w-28">Reward</th>
                                         <th className="py-3.5 px-4 text-center w-24">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100 text-sm font-medium text-black">
-
-                                    {/* Baris Kuis 1 */}
-                                    <tr className="group hover:bg-gray-50 transition-colors">
-                                        <td className="py-4 px-4">
-                                            <div className="flex flex-col items-start">
-                                                <span className="font-bold text-gray-900">Smart Contract Dasar</span>
-                                                <span className="text-xs text-gray-500 mt-0.5">Dibuat oleh: Admin</span>
-                                            </div>
-                                        </td>
-                                        <td className="py-4 px-4 text-gray-700">
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                                                Web3 / Crypto
-                                            </span>
-                                        </td>
-                                        <td className="py-4 px-4 text-center text-gray-600">15 Soal</td>
-                                        <td className="py-4 px-4 text-right font-black text-blue-600">100 QW3</td>
-                                        <td className="py-4 px-4 text-center">
-                                            <a href="/quiz/1" className="inline-block text-xs font-bold bg-blue-100 hover:bg-blue-200 text-blue-600 px-3 py-1.5 rounded-lg transition-colors">
-                                                Buat Soal
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    {/* A. Kondisi saat data sedang dimuat dari Supabase */}
+                                    {loading ? (
+                                        <tr>
+                                            <td colSpan={5} className="py-8 text-center text-gray-500 font-normal">
+                                                Memuat data kuis dari Supabase...
+                                            </td>
+                                        </tr>
+                                    ) : /* B. Kondisi jika data di database masih kosong */
+                                        quizzes.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={5} className="py-8 text-center text-gray-500 font-normal">
+                                                    Belum ada kuis tersedia. Buat kuis pertama Anda!
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            /* C. Kondisi saat data berhasil diambil (Looping data) */
+                                            quizzes.map((quiz) => (
+                                                <tr key={quiz.id} className="group hover:bg-gray-50 transition-colors">
+                                                    <td className="py-4 px-4">
+                                                        <div className="flex flex-col items-start">
+                                                            {/* Menampilkan Judul Kuis secara dinamis */}
+                                                            <span className="font-bold text-gray-900">{quiz.title_quiz}</span>
+                                                            {/* Menampilkan Deskripsi Kuis secara dinamis */}
+                                                            <span className="text-xs text-gray-500 mt-0.5 line-clamp-1 max-w-xs font-normal">
+                                                                {quiz.desc_quiz || 'Tidak ada deskripsi.'}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="py-4 px-4 text-gray-700">
+                                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                                                            {quiz.type_quiz}
+                                                        </span>
+                                                    </td>
+                                                    <td className="py-4 px-4 text-center text-gray-600 font-normal">15 Soal</td>
+                                                    <td className="py-4 px-4 text-center">
+                                                        {/* Mengarahkan tombol aksi secara dinamis berdasarkan ID kuis */}
+                                                        <a href={`/quiz/${quiz.id}`} className="inline-block text-xs font-bold bg-blue-100 hover:bg-blue-200 text-blue-600 px-3 py-1.5 rounded-lg transition-colors">
+                                                            Buat Soal
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+
 
 
             </div>
