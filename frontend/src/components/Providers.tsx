@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
 import { config } from '@/config/wagmi'
 import { AuthProvider } from '@/context/AuthContext'
+import { QuizProvider } from '@/context/QuizContext'
 import { ReactNode, useState } from 'react'
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -13,7 +14,9 @@ export function Providers({ children }: { children: ReactNode }) {
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          {children}
+          <QuizProvider>
+            {children}
+          </QuizProvider>
         </AuthProvider>
       </QueryClientProvider>
     </WagmiProvider>

@@ -1,89 +1,39 @@
 'use client'
 
-import { createClient } from '@/utils/supabase/client'
-import { FormEvent, useEffect, useState } from 'react'
-
-// 1. Definisikan tipe data Quiz sesuai kolom nyata di DB Supabase Anda
-interface Quiz {
-    id: number
-    title: string
-    type: string | null
-    description: string | null
-    created_at?: string
-}
+import { FormEvent, useState } from 'react'
+import { useQuizContext } from '@/context/QuizContext'
 
 export default function StudentDashboard() {
+    const { quizzes, loading, createQuiz } = useQuizContext()
 
-    const supabase = createClient()
-
-    // State manajemen komponen
-    const [quizzes, setQuizzes] = useState<Quiz[]>([])
+    // State manajemen komponen untuk form
     const [title, setTitle] = useState<string>('')
     const [typeQuiz, setTypeQuiz] = useState<string>('')
     const [description, setDescription] = useState<string>('')
-    const [loading, setLoading] = useState<boolean>(true)
     const [submitting, setSubmitting] = useState<boolean>(false)
 
-    // 2. FUNGSI FETCH: Mengambil daftar kuis dari Supabase
-    async function fetchQuizzes() {
-        setLoading(true)
-        try {
-            const { data, error } = await supabase
-                .from('quiz') // Pastikan hanya tertulis kata 'quiz' tanpa variasi lain
-                .select('*')
-                .order('id', { ascending: false })
-
-            if (error) {
-                throw error
-            }
-
-            if (data) {
-                setQuizzes(data as Quiz[])
-            }
-        } catch (err: any) {
-            console.error('Gagal memuat kuis:', err.message)
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    // Jalankan fungsi fetch saat pertama kali halaman terbuka
-    useEffect(() => {
-        fetchQuizzes()
-    }, [])
-
-    // 3. FUNGSI INSERT: Menyimpan data kuis baru ke database Supabase
+    // FUNGSI INSERT: Menyimpan data kuis baru menggunakan context
     async function handleCreateQuiz(e: FormEvent) {
         e.preventDefault()
         if (!title.trim()) return
 
         setSubmitting(true)
         try {
-            const { error } = await supabase
-                .from('quiz')
-                .insert([
-                    {
-                        title_quiz: title,
-                        desc_quiz: description,
-                        // 💡 TRICK: Jika typeQuiz kosong/null, otomatis simpan sebagai 'Umum'
-                        type_quiz: typeQuiz || 'Umum'
-                    }
-                ])
-
-            if (error) throw error
-
+            await createQuiz({
+                title_quiz: title,
+                desc_quiz: description,
+                type_quiz: typeQuiz || 'Umum'
+            })
             // Reset Form
             setTitle('')
             setDescription('')
-            setTypeQuiz('') // Kembalikan ke kosong jika menggunakan string
-            await fetchQuizzes()
+            setTypeQuiz('')
         } catch (err: any) {
-            alert(`Gagal menyimpan kuis: ${err.message}`)
+            alert(err.message)
         } finally {
             setSubmitting(false)
         }
     }
-
 
     return (
         <div className="max-w-7xl mx-auto space-y-10 animate-fade-in-up text-black ">
@@ -183,14 +133,14 @@ export default function StudentDashboard() {
                                     {/* A. Kondisi saat data sedang dimuat dari Supabase */}
                                     {loading ? (
                                         <tr>
-                                            <td colSpan={5} className="py-8 text-center text-gray-500 font-normal">
+                                            <td colSpan={4} className="py-8 text-center text-gray-500 font-normal">
                                                 Memuat data kuis dari Supabase...
                                             </td>
                                         </tr>
                                     ) : /* B. Kondisi jika data di database masih kosong */
                                         quizzes.length === 0 ? (
                                             <tr>
-                                                <td colSpan={5} className="py-8 text-center text-gray-500 font-normal">
+                                                <td colSpan={4} className="py-8 text-center text-gray-500 font-normal">
                                                     Belum ada kuis tersedia. Buat kuis pertama Anda!
                                                 </td>
                                             </tr>
