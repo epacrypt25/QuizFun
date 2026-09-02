@@ -34,17 +34,14 @@ export default function QuizManagementPage() {
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     // Fungsi untuk menangani penyimpanan soal baru dari modal
-    const handleSaveNewQuestion = (newQuestionData) => {
-        const newEntry = {
-            id: questions.length + 1,
-            ...newQuestionData,
-        }
-        setQuestions([...questions, newEntry])
+    // 1. Pada fungsi penambah pertanyaan (baris 37):
+    const handleSaveNewQuestion = (newQuestionData: NewQuestion) => {
+    // logika penyimpanan soal...
     }
 
-    // Fungsi untuk menghapus soal (opsional)
-    const handleDeleteQuestion = (id) => {
-        setQuestions(questions.filter((item) => item.id !== id))
+    // 2. Pada fungsi penghapus atau pencarian berdasarkan ID (baris 46):
+    const handleDeleteQuestion = (id: string | number) => {
+    // logika penghapusan soal...
     }
 
     return (
