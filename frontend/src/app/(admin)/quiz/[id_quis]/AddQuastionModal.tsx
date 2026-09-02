@@ -3,7 +3,24 @@
 import { HelpCircle, Plus, X } from 'lucide-react'
 import { useState } from 'react'
 
-export default function AddQuestionModal({ isOpen, onClose, onSave }) {
+interface Option {
+    label: string
+    text: string
+}
+
+interface NewQuestion {
+    question: string
+    options: Option[]
+    correctOption: string
+}
+
+interface AddQuestionModalProps {
+    isOpen: boolean
+    onClose: () => void
+    onSave: (question: NewQuestion) => void
+}
+
+export default function AddQuestionModal({ isOpen, onClose, onSave }: AddQuestionModalProps) {
     const [soal, setSoal] = useState('')
     const [opsiA, setOpsiA] = useState('')
     const [opsiB, setOpsiB] = useState('')
@@ -13,9 +30,9 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }) {
 
     if (!isOpen) return null
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        const newQuestion = {
+        const newQuestion: NewQuestion = {
             question: soal,
             options: [
                 { label: 'A', text: opsiA },
@@ -31,10 +48,8 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
-            {/* Modal Card */}
             <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden text-black animate-scale-up">
 
-                {/* Header Modal */}
                 <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-gray-50/50">
                     <div className="flex items-center gap-2.5">
                         <div className="p-2 rounded-xl bg-blue-50 text-blue-600">
@@ -53,11 +68,8 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }) {
                     </button>
                 </div>
 
-                {/* Form Content */}
                 <div className="p-6 max-h-[80vh] overflow-y-auto">
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
-                        {/* Input Isi Soal */}
                         <div className="flex flex-col gap-1.5 w-full text-left">
                             <label className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
                                 Isi Pertanyaan / Soal
@@ -72,9 +84,7 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }) {
                             />
                         </div>
 
-                        {/* Input Pilihan Ganda (Grid 2 Kolom) */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full text-left">
-                            {/* Opsi A */}
                             <div className="flex flex-col gap-1.5">
                                 <label className="text-xs font-bold text-gray-700">Pilihan A</label>
                                 <input
@@ -87,7 +97,6 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }) {
                                 />
                             </div>
 
-                            {/* Opsi B */}
                             <div className="flex flex-col gap-1.5">
                                 <label className="text-xs font-bold text-gray-700">Pilihan B</label>
                                 <input
@@ -100,7 +109,6 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }) {
                                 />
                             </div>
 
-                            {/* Opsi C */}
                             <div className="flex flex-col gap-1.5">
                                 <label className="text-xs font-bold text-gray-700">Pilihan C</label>
                                 <input
@@ -113,7 +121,6 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }) {
                                 />
                             </div>
 
-                            {/* Opsi D */}
                             <div className="flex flex-col gap-1.5">
                                 <label className="text-xs font-bold text-gray-700">Pilihan D</label>
                                 <input
@@ -127,7 +134,6 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }) {
                             </div>
                         </div>
 
-                        {/* Kunci Jawaban */}
                         <div className="flex flex-col gap-1.5 w-full text-left">
                             <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
                                 Kunci Jawaban Benar
@@ -149,7 +155,6 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }) {
                             </div>
                         </div>
 
-                        {/* Aksi Tombol Bawah */}
                         <div className="flex items-center gap-3 pt-4 border-t border-gray-100 mt-2">
                             <button
                                 type="button"
@@ -165,7 +170,6 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }) {
                                 <Plus className="h-4 w-4" /> Simpan Pertanyaan
                             </button>
                         </div>
-
                     </form>
                 </div>
 
