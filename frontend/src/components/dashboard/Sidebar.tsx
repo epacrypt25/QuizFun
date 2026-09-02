@@ -1,11 +1,13 @@
 'use client'
 
 import {
-  BookOpen,
+  Banknote,
   ChevronLeft,
+  FileText,
   LayoutDashboard,
   LogOut,
-  Menu
+  Menu,
+  UserShield
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -26,9 +28,9 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
 
   const menuItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Quizzes', href: '/quiz', icon: BookOpen },
-    { name: 'Mint Token', href: '/mint', icon: BookOpen },
-    { name: 'Profile', href: '/profile', icon: BookOpen },
+    { name: 'Quizzes', href: '/quiz', icon: FileText },
+    { name: 'Mint Token', href: '/mint', icon: Banknote },
+    { name: 'Profile', href: '/profile', icon: UserShield },
   ]
 
   return (
@@ -41,8 +43,8 @@ export function Sidebar({ isCollapsed = false, onToggle }: SidebarProps) {
       <div className="flex-1 flex flex-col">
         <div className={`flex items-center mb-4 ${isCollapsed ? 'justify-center' : 'justify-between px-2'}`}>
           {!isCollapsed && (
-            <span className="text-xl font-black tracking-tight text-blue-600 dark:text-blue-500">
-              Quiz<span className="text-gray-900 dark:text-white">Fun</span>
+            <span className="text-xl font-black tracking-tight text-black">
+              QuizFun
             </span>
           )}
 

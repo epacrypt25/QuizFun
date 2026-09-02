@@ -8,7 +8,7 @@ interface Option {
     text: string
 }
 
-interface NewQuestion {
+interface NewQuestionData {
     question: string
     options: Option[]
     correctOption: string
@@ -17,7 +17,7 @@ interface NewQuestion {
 interface AddQuestionModalProps {
     isOpen: boolean
     onClose: () => void
-    onSave: (question: NewQuestion) => void
+    onSave: (question: NewQuestionData) => void
 }
 
 export default function AddQuestionModal({ isOpen, onClose, onSave }: AddQuestionModalProps) {
@@ -32,7 +32,7 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }: AddQuestio
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        const newQuestion: NewQuestion = {
+        const newQuestion: NewQuestionData = {
             question: soal,
             options: [
                 { label: 'A', text: opsiA },
@@ -43,7 +43,12 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }: AddQuestio
             correctOption: jawabanBenar,
         }
         onSave(newQuestion)
-        onClose()
+        setSoal('')
+        setOpsiA('')
+        setOpsiB('')
+        setOpsiC('')
+        setOpsiD('')
+        setJawabanBenar('A')
     }
 
     return (
@@ -57,7 +62,7 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }: AddQuestio
                         </div>
                         <div>
                             <h3 className="text-base font-bold text-gray-900">Tambah Pertanyaan Kuis</h3>
-                            <p className="text-xs text-gray-500">Masukkan detail soal dan pilihan ganda untuk modul ujian.</p>
+                            <p className="text-xs text-gray-500">Masukkan detail soal dan pilihan ganda (A, B, C, D) ke database.</p>
                         </div>
                     </div>
                     <button
@@ -71,7 +76,7 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }: AddQuestio
                 <div className="p-6 max-h-[80vh] overflow-y-auto">
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                         <div className="flex flex-col gap-1.5 w-full text-left">
-                            <label className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+                            <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
                                 Isi Pertanyaan / Soal
                             </label>
                             <textarea
@@ -86,49 +91,49 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }: AddQuestio
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full text-left">
                             <div className="flex flex-col gap-1.5">
-                                <label className="text-xs font-bold text-gray-700">Pilihan A</label>
+                                <label className="text-xs font-bold text-gray-700">Choice A</label>
                                 <input
                                     type="text"
                                     required
                                     value={opsiA}
                                     onChange={(e) => setOpsiA(e.target.value)}
-                                    placeholder="Isi jawaban A..."
+                                    placeholder="Isi pilihan A..."
                                     className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 shadow-sm"
                                 />
                             </div>
 
                             <div className="flex flex-col gap-1.5">
-                                <label className="text-xs font-bold text-gray-700">Pilihan B</label>
+                                <label className="text-xs font-bold text-gray-700">Choice B</label>
                                 <input
                                     type="text"
                                     required
                                     value={opsiB}
                                     onChange={(e) => setOpsiB(e.target.value)}
-                                    placeholder="Isi jawaban B..."
+                                    placeholder="Isi pilihan B..."
                                     className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 shadow-sm"
                                 />
                             </div>
 
                             <div className="flex flex-col gap-1.5">
-                                <label className="text-xs font-bold text-gray-700">Pilihan C</label>
+                                <label className="text-xs font-bold text-gray-700">Choice C</label>
                                 <input
                                     type="text"
                                     required
                                     value={opsiC}
                                     onChange={(e) => setOpsiC(e.target.value)}
-                                    placeholder="Isi jawaban C..."
+                                    placeholder="Isi pilihan C..."
                                     className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 shadow-sm"
                                 />
                             </div>
 
                             <div className="flex flex-col gap-1.5">
-                                <label className="text-xs font-bold text-gray-700">Pilihan D</label>
+                                <label className="text-xs font-bold text-gray-700">Choice D</label>
                                 <input
                                     type="text"
                                     required
                                     value={opsiD}
                                     onChange={(e) => setOpsiD(e.target.value)}
-                                    placeholder="Isi jawaban D..."
+                                    placeholder="Isi pilihan D..."
                                     className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 shadow-sm"
                                 />
                             </div>
@@ -167,7 +172,7 @@ export default function AddQuestionModal({ isOpen, onClose, onSave }: AddQuestio
                                 type="submit"
                                 className="w-2/3 flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 py-3 text-sm font-bold text-white transition-all shadow-md shadow-blue-600/20 cursor-pointer"
                             >
-                                <Plus className="h-4 w-4" /> Simpan Pertanyaan
+                                <Plus className="h-4 w-4" /> Simpan ke Supabase
                             </button>
                         </div>
                     </form>
